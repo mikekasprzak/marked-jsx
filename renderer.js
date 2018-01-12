@@ -2,15 +2,15 @@ import {h} 								from 'preact/preact';
 import Util								from './util';
 
 //COMPONENT IMPORTS
-import LinkMail							from 'com/link-mail/mail';		// TODO: Obsolete me
-import NavLink 							from 'com/nav-link/link';
-import SmartLink 						from 'com/autoembed/smartlink';
-import LocalLink						from 'com/autoembed/locallink';
-
-import AutoEmbed 						from 'com/autoembed/autoembed';
-import SmartDomains						from 'com/autoembed/smartdomains';
-
-import BlockSpoiler 					from 'com/block-spoiler/spoiler';
+//import LinkMail							from 'com/link-mail/mail';		// TODO: Obsolete me
+//import NavLink 							from 'com/nav-link/link';
+//import SmartLink 						from 'com/autoembed/smartlink';
+//import LocalLink						from 'com/autoembed/locallink';
+//
+//import AutoEmbed 						from 'com/autoembed/autoembed';
+//import SmartDomains						from 'com/autoembed/smartdomains';
+//
+//import BlockSpoiler 					from 'com/block-spoiler/spoiler';
 
 export default class Renderer {
 	constructor( options ) {
@@ -265,7 +265,7 @@ export default class Renderer {
 			//return '<div class="unsafe-image-url">' + text + '</div>';
 			href = STATIC_ENDPOINT + '/content/internal/pleaseupload.png';
 		}
-		return (<img class="img" src={href} alt={text} title={title}/>);
+		return (<img class="img" src={href} alt={text} title={title} />);
 	}
 
 	text( text ) {
