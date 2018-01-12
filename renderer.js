@@ -18,9 +18,9 @@ export default class Renderer {
 	}
 
 	code( code, lang, escaped ) {
-		if (this.options.highlight) {
+		if ( this.options.highlight ) {
 			var out = this.options.highlight(code, lang);
-			if (out != null && out !== code) {
+			if ( (out != null) && (out !== code) ) {
 				escaped = true;
 				code = out;
 
@@ -29,11 +29,7 @@ export default class Renderer {
 		}
 
 		if ( !lang ) {
-			return (
-				<pre class="language-"><code>{(escaped
-					? code
-					: Util.escape(code, true))}</code></pre>
-			);
+			return (<pre class="language-"><code>{(escaped ? code : Util.escape(code, true))}</code></pre>);
 		}
 
 		return (
@@ -44,15 +40,11 @@ export default class Renderer {
 	}
 
 	spoiler( secret ) {
-		return (
-			<BlockSpoiler>{secret}</BlockSpoiler>
-		);
+		return (<BlockSpoiler>{secret}</BlockSpoiler>);
 	}
 
 	blockquote( quote ) {
-		return (
-			<blockquote>{quote}</blockquote>
-		);
+		return (<blockquote>{quote}</blockquote>);
 	}
 
 	html( html ) {
@@ -61,34 +53,24 @@ export default class Renderer {
 
 	heading( text, level, raw ) {
 		const HeaderTag = `h${level}`;
-		return (
-			<HeaderTag id={this.options.headerPrefix + raw.toLowerCase().replace(/[^\w]+/g, '-').replace(/-$/, "")}>{text}</HeaderTag>
-		);
+		return (<HeaderTag id={this.options.headerPrefix + raw.toLowerCase().replace(/[^\w]+/g, '-').replace(/-$/, "")}>{text}</HeaderTag>);
 	}
 
-	hr( ) {
+	hr() {
 		return (<hr/>);
 	}
 
 	list( body, ordered ) {
-		var Type = ordered
-			? 'ol'
-			: 'ul';
-		return (
-			<Type>{'\n'}{body}</Type>
-		);
+		var Type = ordered ? 'ol' : 'ul';
+		return (<Type>{'\n'}{body}</Type>);
 	}
 
 	listitem( text ) {
-		return (
-			<li>{text}</li>
-		);
+		return (<li>{text}</li>);
 	}
 
 	paragraph( text ) {
-		return (
-			<p>{text}</p>
-		);
+		return (<p>{text}</p>);
 	}
 
 	table( header, body ) {
@@ -101,40 +83,28 @@ export default class Renderer {
 	}
 
 	tablerow( content ) {
-		return (
-			<tr>{content}</tr>
-		);
+		return (<tr>{content}</tr>);
 	}
 
 	tablecell( content, flags ) {
-		var Type = flags.header
-			? 'th'
-			: 'td';
-		return (
-			<Type style={"text-align:" + flags.align
-				? flags.align
-				: ''}>{content}</Type>
-		);
+		var Type = flags.header ? 'th' : 'td';
+		return (<Type style={"text-align:" + flags.align ? flags.align : ''}>{content}</Type>);
 	}
 
 	// span level renderer
 	strong( text ) {
-		return (
-			<strong>{text}</strong>
-		);
+		return (<strong>{text}</strong>);
 	}
 
 	em( text ) {
-		return (
-			<em>{text}</em>
-		);
+		return (<em>{text}</em>);
 	}
 
 	emoji( text ) {
 		text = Array.isArray(text) ? text.join('') : text;
 		let shortname = window.emoji.shortnameToURL(text);
 		if ( shortname ) {
-			return <img class="emoji" alt={text} title={':'+text+':'} src={shortname} />;
+			return (<img class="emoji" alt={text} title={':'+text+':'} src={shortname} />);
 		}
 		return ':'+text+':';
 	}
@@ -144,35 +114,23 @@ export default class Renderer {
 	//};
 
 	atname( text ) {
-		return (
-			<NavLink href={"/users/" + text}>@{text}</NavLink>
-		);
+		return (<NavLink href={"/users/" + text}>@{text}</NavLink>);
 	}
 
 	codespan( text ) {
-		return (
-			<code>{Util.htmldecode(text)}</code>
-		);
+		return (<code>{Util.htmldecode(text)}</code>);
 		// text.replace('\n','') // ??
 	}
 
-	br( ) {
-		//    if(this.options.xhtml) {
+	br() {
 		return (<br/>);
-		// } else {
-		//   return (<br>);
-		// }
-
 	}
 
 	del( text ) {
-		return (
-			<del>{text}</del>
-		);
+		return (<del>{text}</del>);
 	}
 
 	parseLink( href ) {
-
 		if ( href.indexOf('///') == 0 ) {
 			// static domain link, something on our static server
 			return {"type": "static"};
@@ -189,19 +147,14 @@ export default class Renderer {
 		url = extractFromURL(href);
 
 		if ( url.domain ) {
-
 			if ( SmartDomains ) {
-
 				for ( var i=0; i < SmartDomains.length; i++ ) {
 					let smartdomain = SmartDomains[i];
 
 					if ( url.domain.indexOf(smartdomain.domain) !== -1 ) {
-
 						if ( smartdomain.embed_test ) {
-
 							let test = new RegExp(smartdomain.embed_test);
 							let match = test.exec(url.href);
-
 							if ( match !== null ) {
 								// embedable domain found, will embed this content in the page.
 								return {"type": "embed", "match": match[1], "info": smartdomain};
@@ -228,13 +181,11 @@ export default class Renderer {
 			try {
 				var prot = decodeURIComponent(unescape(href)).replace(/[^\w:]/g, '').toLowerCase();
 			}
-			catch (e) {
+			catch ( e ) {
 				return '';
 			}
 
-			if ( 	prot.indexOf('javascript:')	=== 0 ||
-					prot.indexOf('vbscript:')	=== 0 ||
-					prot.indexOf('data:')		=== 0 ) {
+			if ( (prot.indexOf('javascript:') === 0) || (prot.indexOf('vbscript:') === 0) || (prot.indexOf('data:') === 0) ) {
 				return '';
 			}
 		}
@@ -255,26 +206,26 @@ export default class Renderer {
 
 		if ( result.type == "simple" ) {
 			hasText = hasText && !/^\s+$/.test(text); // make sure the link isn't all whitespace too
-			return <NavLink href={href} title={title} target={"_blank"}>{(hasText) ? text : href}</NavLink>;
+			return (<NavLink href={href} title={title} target={"_blank"}>{(hasText) ? text : href}</NavLink>);
 		}
 		else if ( result.type == "smart" ) {
 			hasText = hasText && !/^\s+$/.test(joinedText); // make sure the link isn't all whitespace too
 			let partial = href.substring(href.indexOf(result.info.domain) + result.info.domain.length);
-			return <SmartLink icon_name={result.info.icon_name} full_url={href} domain={(hasText) ? "" : result.info.domain} part_url={(hasText) ? text : partial}></SmartLink>;
+			return (<SmartLink icon_name={result.info.icon_name} full_url={href} domain={(hasText) ? "" : result.info.domain} part_url={(hasText) ? text : partial}></SmartLink>);
 		}
 		else if ( result.type == "embed" ) {
-			return <AutoEmbed link={result} title={title} text={(hasText) ? text : href} />;
+			return (<AutoEmbed link={result} title={title} text={(hasText) ? text : href} />);
 		}
 		else if ( result.type == "relative" ) {
-			return <LocalLink href={href} text={(hasText) ? text : href} title={title} target={"_blank"}/>;
+			return (<LocalLink href={href} text={(hasText) ? text : href} title={title} target={"_blank"}/>);
 		}
 		else if ( result.type == "protocol" ) {
 			hasText = hasText && !/^\s+$/.test(joinedText); // make sure the link isn't all whitespace too
-			return <NavLink href={href} text={(hasText) ? joinedText : href.substr(2)} title={title} target={"_blank"}/>;
+			return (<NavLink href={href} text={(hasText) ? joinedText : href.substr(2)} title={title} target={"_blank"}/>);
 		}
 		else if ( result.type == "static" ) {
 			hasText = hasText && !/^\s+$/.test(joinedText); // make sure the link isn't all whitespace too
-			return <NavLink href={"//" + STATIC_DOMAIN + href.substr(2)} text={(hasText) ? joinedText : (STATIC_DOMAIN + href.substr(2))} title={title} target={"_blank"}/>;
+			return (<NavLink href={"//" + STATIC_DOMAIN + href.substr(2)} text={(hasText) ? joinedText : (STATIC_DOMAIN + href.substr(2))} title={title} target={"_blank"}/>);
 		}
 	}
 
@@ -284,23 +235,17 @@ export default class Renderer {
 			try {
 				var prot = decodeURIComponent(unescape(href)).replace(/[^\w:]/g, '').toLowerCase();
 			}
-			catch (e) {
+			catch ( e ) {
 				return '';
 			}
-			if (	prot.indexOf('javascript:')	=== 0 ||
-					prot.indexOf('vbscript:')	=== 0 ||
-					prot.indexOf('data:')		=== 0 ) {
+			if ( (prot.indexOf('javascript:') === 0) || (prot.indexOf('vbscript:') === 0) || (prot.indexOf('data:') === 0) ) {
 				return '';
 			}
 		}
 
 		//text = leftSide + '[at]' + rightSide;
 
-		var out = (
-			<LinkMail href={href} title={text}>{text}</LinkMail>
-		);
-
-		return out;
+		return (<LinkMail href={href} title={text}>{text}</LinkMail>);
 
 	}
 
@@ -320,17 +265,10 @@ export default class Renderer {
 			//return '<div class="unsafe-image-url">' + text + '</div>';
 			href = STATIC_ENDPOINT + '/content/internal/pleaseupload.png';
 		}
-		var out = (<img class="img" src={href} alt={text} title={title}/>);
-		/*if (title) {
-      out += ' title="' + title + '"';
-    }
-    out += this.options.xhtml
-      ? '/>'
-      : '>';*/
-		return out;
+		return (<img class="img" src={href} alt={text} title={title}/>);
 	}
 
 	text( text ) {
-		return (Util.htmldecode(text));
+		return Util.htmldecode(text);
 	}
 }
