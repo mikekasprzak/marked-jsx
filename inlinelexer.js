@@ -284,7 +284,7 @@ export default class InlineLexer {
 	smartypants( text ) {
 		if ( !this.options.smartypants )
 			return text;
-		return text
+		return (text
 			// em-dashes
 			.replace(/---/g, '\u2014')
 			// en-dashes
@@ -299,7 +299,8 @@ export default class InlineLexer {
 			// closing doubles
 			.replace(/"/g, '\u201d')
 			// ellipses
-			.replace(/\.{3}/g, '\u2026');
+			.replace(/\.{3}/g, '\u2026')
+		);
 	}
 
 	/**

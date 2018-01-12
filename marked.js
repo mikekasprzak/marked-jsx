@@ -63,7 +63,7 @@ export default class Marked {
 
 				opt.highlight = highlight;
 
-				return err ? callback(err) : callback(null, out);
+				return (err ? callback(err) : callback(null, out));
 			};
 
 			if ( !highlight || (highlight.length < 3) ) {
@@ -79,18 +79,18 @@ export default class Marked {
 				(function( token ) {
 					//console.log(token);
 					if ( token.type !== 'code' ) {
-						return --pending || done();
+						return (--pending || done());
 					}
-					return highlight(token.text, token.lang, function( err, code ) {
+					return (highlight(token.text, token.lang, function( err, code ) {
 						if ( err )
 							return done(err);
 						if ( (code == null) || (code === token.text) ) {
-							return --pending || done();
+							return (--pending || done());
 						}
 						token.text = code;
 						token.escaped = true;
 						--pending || done();
-					});
+					}));
 				})(tokens[i]);
 			}
 
@@ -110,7 +110,7 @@ export default class Marked {
 	}
 
 	static cleanMarkdown( markdown ) {
-		return markdown
+		return (markdown
 			//remove code
 			.replace(/^( {4}[^\n]+\n*)+/, "")
 			//remove tables
@@ -139,7 +139,8 @@ export default class Marked {
 			.replace(/\n{2,}/g, '\n\n')
 			//emoji
 			.replace(/^:([a-z_]+):/, '')
-			.replace("\n", " ");
+			.replace("\n", " ")
+		);
 	}
 
 	setOptions( opt ) {

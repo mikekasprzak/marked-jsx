@@ -131,7 +131,7 @@ export default class Lexer {
 				this.tokens.push({
 					type: 'code',
 					lang: cap[2],
-					text: cap[3] || ''
+					text: (cap[3] || '')
 				});
 				continue;
 			}
